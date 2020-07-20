@@ -1,0 +1,50 @@
+<!-- extend base layout -->
+{% extends "base.html" %}
+{% block header %}
+<link rel="stylesheet" href= "css/index.css">
+{% endblock %}
+{% block content %}
+<br>
+
+<center>
+  <form action="/soumettre" name="soumettre" id="textform" method="post">
+    <textarea name="contenu" rows="4" cols="50" placeholder="Ecrivez ce que vous voulez dans la transaction..."></textarea>
+    <br>
+    <input type="text" name="auteur" placeholder="Votre Nom">
+    <input type="Submit" value="Post">
+  </form>
+</center>
+
+<center>
+  <form action="/senregistrer_aupres" name="senregistrer_aupres" id="textform" method="post">
+    <textarea name="adresse_noeud" rows="1" cols="20" placeholder="Entrer l'adresse d'un noeud_serveur à ajouter à la liste des pairs"></textarea>
+    <input type="Submit" value="Post">
+  </form>
+</center>
+
+<br>
+
+<a href="{{adresse_noeud}}/miner" target="_blank"><button>Demander le minage</button></a>
+<a href="/"><button>Resynchroniser</button></a>
+<a href="{{adresse_noeud}}/chaine"><button>Afficher la chaine brute</button></a>
+
+
+<div style="margin: 20px;">
+
+  {% for publi in publications %}
+  <div class="post_box">
+    <div class="post_box-header">
+      <div class="post_box-options"><button class="option-btn">Répondre</button></div>
+      <div style="background: rgb(0, 97, 146) none repeat scroll 0% 0%; box-shadow: rgb(0, 97, 146) 0px 0px 0px 2px;" class="post_box-avatar">{{publi.auteur[0]}}</div>
+      <div class="name-header">{{publi.auteur}}</div>
+      <div class="post_box-subtitle"> Posté le <i>{{temps_litteral(publi.timestamp)}}</i></div>
+    </div>
+    <div>
+      <div class="post_box-body">
+	<p>{{publi.contenu}}</p>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+{% endblock %}

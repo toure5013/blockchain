@@ -1,0 +1,45 @@
+* Projet Blockchain (en python) 
+Ce Repertoire git contient le code adapté depuis le tutoriel [[https://github.com/satwikkansal/python_blockchain_app/tree/ibm_blockchain_post][python_blockchain_app]] aussi disponible chez [[https://developer.ibm.com/technologies/blockchain/tutorials/develop-a-blockchain-application-from-scratch-in-python/
+][IBM]].
+Il s'agit du code d'un noeud serveur écrire sur une blockchain et partager ainsi des données (ou transaction) sur internet.  
+
+Il n'y a pas de meilleure manière d'apprendre ce qu'est la blockchain que d'en construire une.
+
+Le code peut être copié et testé sur différentes machines distantes afin de tester à l'aide d'un service comme [[https://ngrok.com][ngrok]].  Ce dernier vous permet de rendre une  adresse réseau locale visible depuis sur internet.
+
+Vous pouvez aussi l'exécuter en local en démarrant des noeuds sur différent ports.  Par exemple:
+Pour Linux, préparer  le serveur principal
+#+BEGIN_SRC bash  -i
+export FLASK_APP=noeud_serveur
+#+END_SRC
+
+pour le cmd Windows faire
+#+BEGIN_SRC bash  -i
+set FLASK_APP=noeud_serveur
+#+END_SRC
+
+et si c'est le PowerShell
+#+BEGIN_SRC bash  -i
+set FLASK_APP=noeud_serveur
+#+END_SRC
+
+Puis lancer des noeuds sur différents port
+#+BEGIN_SRC bash  -i
+flask run --port 8000 &
+flask run --port 8001 &
+flask run --port 8002 &
+#+END_SRC
+
+Dans un autre terminal lancer le client
+
+
+#+BEGIN_SRC bash  -i
+export FLASK_APP=noeud_serveur.py
+flask run --port 8000
+#+END_SRC
+
+Dans un autre terminal
+python run_app.py
+
+puis visiter
+http://localhost:5000.
