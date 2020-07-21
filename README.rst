@@ -84,17 +84,23 @@ Lancement
 Variable d'environements
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
-Linux
+N'oubliez pas cette étape. Elle est importante.
 
-.. code:: bash
+-  Linux
 
-    $ export FLASK_APP=noeud_serveur
+   #+BEGIN\ :sub:`SRC` bash -i
 
-Windows (cmd.exe) faire
+$ export FLASK\ :sub:`APP`\ =noeud\ :sub:`serveur`
 
-.. code:: bash
+#+END\ :sub:`SRC`
 
-    > set FLASK_APP=noeud_serveur
+-  Windows (cmd.exe) faire
+
+   #+BEGIN\ :sub:`SRC` bash -i
+
+> set FLASK\ :sub:`APP`\ =noeud\ :sub:`serveur`
+
+#+END\ :sub:`SRC`
 
 pour Windows Powerhsell voir `la doc du projet
 Flask <https://flask.palletsprojects.com/en/1.1.x/cli/#application-discovery>`__.
@@ -123,15 +129,15 @@ En local
 
    .. code:: bash
 
-       $ cd /votre/chemin/pour/MonEnv
-       $ Scripts\activate
-       cd blockchain
+       > cd \votre\chemin\pour\MonEnv
+       > Scripts\activate
+       > cd blockchain
 
    puis
 
    .. code:: bash
 
-       $ python lance_client.py
+       > python lance_client.py
 
    après v puis visiter http://localhost:5000 avec votre navigateur
 
