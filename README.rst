@@ -84,9 +84,7 @@ Lancement
 Variable d'environements
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
-N'oubliez pas cette étape. Elle est importante.
-
-Linux
+N'oubliez pas cette étape. Elle est importante. Linux
 
 .. code:: bash
 
@@ -140,10 +138,11 @@ En local
 Avec un adresse accessible depuis l'internet
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Créer un accès (temporait) à notre serveur local depuis internet
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Créer un accès (temporaire) à notre serveur local depuis internet
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-s'inscrire sur *ngrok.com* et suivre les instructions du site
+S'inscrire sur `ngrok.com <https://ngrok.com>`__ et suivre les
+instructions du site
 
 Utiliser curl pour ajouter les autres noeuds serveur
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
