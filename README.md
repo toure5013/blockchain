@@ -81,7 +81,7 @@ pour Windows Powerhsell voir [la doc du projet Flask](https://flask.palletsproje
     $ flask run --port 8000
 
 Le noeud serveur est maintenant accessible en local à <http://127.0.0.1:8000>
-Vous pouvez changer cette adresse la variable ADRESSE\\\_NOEUD\\\_SERVEUR dans <app/client.py>
+Vous pouvez changer cette adresse la variable ADRESSE\_NOEUD\_SERVEUR dans <app/client.py>
 
 
 #### Lancer le client
