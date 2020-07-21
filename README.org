@@ -43,3 +43,7 @@ python run_app.py
 
 puis visiter
 http://localhost:5000.
+
+
+** template
+https://jinja.palletsprojects.com/en/2.11.x/templates/#list-of-control-structures

@@ -1,50 +1,69 @@
 <!-- extend base layout -->
 {% extends "base.html" %}
 {% block header %}
-<link rel="stylesheet" href= "css/index.css">
+<link rel="stylesheet" href="{{url_for('static', filename='css/index.css')}}" type="text/css" media="screen" />
 {% endblock %}
 {% block content %}
 <br>
 
-<center>
   <form action="/soumettre" name="soumettre" id="textform" method="post">
-    <textarea name="contenu" rows="4" cols="50" placeholder="Ecrivez ce que vous voulez dans la transaction..."></textarea>
+    <textarea name="contenu" rows="4" cols="50" placeholder="Ecrivez ce que vous voulez publier sur la chaine..."></textarea>
     <br>
-    <input type="text" name="auteur" placeholder="Votre Nom">
-    <input type="Submit" value="Post">
+    <input type="text" name="auteur" placeholder="Votre Nom (ou signature)">
+    <input type="Submit" value="Publier">
   </form>
-</center>
 
-<center>
-  <form action="/senregistrer_aupres" name="senregistrer_aupres" id="textform" method="post">
-    <textarea name="adresse_noeud" rows="1" cols="20" placeholder="Entrer l'adresse d'un noeud_serveur à ajouter à la liste des pairs"></textarea>
-    <input type="Submit" value="Post">
+
+
+  <form action="/senregistrer" name="senregistrer" id="textform" method="post">
+    <input type="text" name="adresse_denregistrement" placeholder="Entrer l'adresse d'un noeud_serveur à ajouter à la liste des pairs">
+    <input type="Submit" value="Ajouter">
   </form>
-</center>
+
+<ul class="list-group list-group-horizontal">
+  {% for adresse in pairs %}
+  <li class="list-group-item">{{pair}}</li>
+  {% endfor %}
+</ul>
+
 
 <br>
-
 <a href="{{adresse_noeud}}/miner" target="_blank"><button>Demander le minage</button></a>
 <a href="/"><button>Resynchroniser</button></a>
-<a href="{{adresse_noeud}}/chaine"><button>Afficher la chaine brute</button></a>
+<a href="{{adresse_noeud}}/info_chaine"><button>Afficher les infos de votre chaine (en brute)</button></a>
+<a href="{{adresse_noeud}}/tx_en_attente"><button>Voir les transactions en attente</button></a>
 
+<div  class="container">
+  {% for bloc in blockchain %}
+  <div class="card bg-light mb-3" style="max-width: 38rem;">
+    <div class="card-header">hachage du bloc: {{bloc.hachage}}</div>
+    <div class="card-body">
+      <h4 class="card-title">Block # {{bloc.hauteur}}</h4>
+      <p class="card-text">Date du minage : {{bloc.timestamp}}</p>
+      <div class="accordion" id="txs">
+	{% for tx in bloc.txs %}
+	<div class="card">
+	  <div class="card-header" id="heading{{loop.index}}-{{bloc.hauteur}}">
+	    <h2 class="mb-0">
+              <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapsetx{{loop.index}}-{{bloc.hauteur}}" aria-expanded="false" aria-controls="collapsetx{{loop.index}}-{{bloc.hauteur}}">
+		tx # {{loop.index}}: {{tx.auteur}}
+              </button>
+	    </h2>
+	  </div>
 
-<div style="margin: 20px;">
-
-  {% for publi in publications %}
-  <div class="post_box">
-    <div class="post_box-header">
-      <div class="post_box-options"><button class="option-btn">Répondre</button></div>
-      <div style="background: rgb(0, 97, 146) none repeat scroll 0% 0%; box-shadow: rgb(0, 97, 146) 0px 0px 0px 2px;" class="post_box-avatar">{{publi.auteur[0]}}</div>
-      <div class="name-header">{{publi.auteur}}</div>
-      <div class="post_box-subtitle"> Posté le <i>{{temps_litteral(publi.timestamp)}}</i></div>
-    </div>
-    <div>
-      <div class="post_box-body">
-	<p>{{publi.contenu}}</p>
+	  <div id="collapsetx{{loop.index}}-{{bloc.hauteur}}" class="collapse hide" aria-labelledby="heading{{loop.index}}-{{bloc.hauteur}}" data-parent="#txs">
+	    <div class="card-body">
+	      {{tx.contenu}}
+	    </div>
+	  </div>
+	</div>
+	{% endfor %} 
       </div>
+    <p class="card-text">hachage du bloc précédent : {{bloc.hachage_precedent}}</p>
     </div>
+
   </div>
   {% endfor %}
 </div>
+
 {% endblock %}

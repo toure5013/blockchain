@@ -4,7 +4,7 @@ import time
 
 class Blockchain:
     # difficulte pour notre algorithm de preuve par le travail
-    difficulte = 2
+    difficulte = 3
 
     def __init__(self):
         self.txs_non_confirmees = []

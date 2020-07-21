@@ -20,9 +20,9 @@ pairs: Set[str] = set()
 def nvl_tx():
     donnees_tx_recues = request.get_json()
 
-    # pour chacun des champs obligatoires ["author", "content"]
+    # pour chacun des champs obligatoires ["auteur", "contenu"]
     # Nous vérifions que le champ est bien renseigné
-    if not all([c for c in ["author", "content"] if donnees_tx_recues.get(c, False)]):
+    if not all([c for c in ["auteur", "contenu"] if donnees_tx_recues.get(c, False)]):
         return "Donnée de transaction invalide", 404
 
     # nous ajoutons l'heure
@@ -35,20 +35,17 @@ def nvl_tx():
     return "Succès", 201
 
 
-@app.route("/chaine", methods=["GET"])
-def recupe_chaine():
+@app.route("/info_chaine", methods=["GET"])
+def recupe_info_chaine():
     # Quand le noeud serveur est appelé sur cette url
     # Nous sauvegardons la chaine dans une variable
-    donnee_chaine = [bloc.__dict__ for bloc in blockchain.chaine]
+    blockhain_brute = [bloc.__dict__ for bloc in blockchain.chaine]
 
-    # et Renvoyons un dictionnaire au format JSON (pour une communication
-    # via internet)
+    # et Renvoyons un dictionnaire au format JSON (pour une communication via internet)
     # ce dictionnaire contient la longueur de la chaine,
     # la chaine comme une liste  de bloc au format dictionnaire
     # la liste des adresses des pairs
-    return json.dumps(
-        {"longueur": len(donnee_chaine), "chaine": donnee_chaine, "pairs": list(pairs)}
-    )
+    return json.dumps({"chaine": blockhain_brute, "pairs": list(pairs)})
 
 
 @app.route("/miner", methods=["GET"])
@@ -77,60 +74,92 @@ def miner_txs_non_confirmees():
         return f"Le Bloc #{blockchain.dernier_bloc.hauteur} est miné."
 
 
-@app.route("/enregistrer_noeud", methods=["POST"])
-def enregistrer_nvx_pairs():
-    adresse_noeud = request.get_json()["adresse_noeud"]
-    if not adresse_noeud:
+@app.route("/enregistrer_nv_noeud", methods=["POST"])
+def enregistrer_nv_noeud():
+    # Nous recupérons la adresse à ajouter aux pairs
+    adresse_noeud_a_ajouter = request.get_json()["adresse_noeud_a_ajouter"]
+
+    # Nous vérifions qu'elle est valide
+    if not adresse_noeud_a_ajouter:
         return "Données invalides.", 400
 
-    pairs.add(adresse_noeud)
+    # Nous l'ajoutons alors à l'ensemble des pairs
+    pairs.add(adresse_noeud_a_ajouter)
 
-    return recupe_chaine()
+    # et nous renvoyons les informations liés à notre chaine
+    # le nombre de bloc, les blocs, et les pairs que nous connaissons
+    return recupe_info_chaine()
 
 
 @app.route("/senregistrer_aupres", methods=["POST"])
 def senregistrer_aupres_noeud_existant():
-    adresse_noeud = request.get_json()["adresse_noeud"]
-    if not adresse_noeud:
+    # Nous récupérons l'adresse du noeud serveur auprès duquel nous voulons nous
+    # enregistrer.  Cette information est posté avec le client
+    adresse_noeud_serveur_existant = request.get_json()["adresse"]
+
+    if not adresse_noeud_serveur_existant:
         return "Données invalides.", 400
 
-    # voir comment récupére l'adress ngrok
-    data = {"adresse_noeud": request.host_url}
-    entetes = {"Content-Type": "application/json"}
-
-    reponse = requests.post(
-        url=adresse_noeud + "/enregistrer_noeud", data=json.dumps(data), headers=entetes
+    # voir comment récupérer l'adress ngrok
+    # Nous activons la fonction du serveur distant lié à l'url /enregistrer_nv_noeud
+    reponse_info_chaine = requests.post(
+        url="http://{adresse_noeud_serveur_existant}/enregistrer_nv_noeud",
+        data=json.dumps({"adresse_noeud_a_ajouter": request.host_url}),
+        headers={"Content-Type": "application/json"},
     )
 
-    if reponse.status_code == 200:
+    # Si l'appel cest bien passé
+    if reponse_info_chaine.status_code == 200:
         global blockchain
         global pairs
-        chaine_brute = reponse.json()["chaine"]
-        blockchain = recupe_chaine_brute(chaine_brute)
-        pairs.update(reponse.json()["pairs"])
+        # Nous mettons à jour notre blockchain avec la copie renvoyée par le
+        # noeud serveur où nous nous sommes enregistré
+        blockchain = regenere_blockchain_avec(reponse_info_chaine.json()["chaine"])
+        # Nous mettons à jour les pairs que nous connaissons
+        pairs.update(reponse_info_chaine.json()["pairs"])
+        # et Renvoyons un messsage de succès
         return "Enregistrement Réussit", 200
     else:
-        return reponse.content, reponse.status_code
+        # Sinon nous retournons le contenu de la réponse et le code d'erreur
+        return reponse_info_chaine.content, reponse_info_chaine.status_code
 
 
-def recupe_chaine_brute(chaine_brute):
-    blockchain_generee = Blockchain()
-    blockchain_generee.creer_bloc_genese()
-    for idx, donnees_bloc in enumerate(chaine_brute):
+def regenere_blockchain_avec(chaine_recue):
+    # Nous appelons cette fonction lorsque le notre noeud s'enregistre auprès d'un autre
+    # noeud serveur.  Nous reconstruisons alors notre blockchain
+
+    # Nous instantion un nouvelle objet Blockchain
+    blockchain_regeneree = Blockchain()
+    # Pour lequel nous créeons le bloc de genèse
+    blockchain_regeneree.creer_bloc_genese()
+
+    # Ensuite pour chaque bloc 'reçu' ie récupéré dans la chaine reçue
+    for idx, bloc_recu in enumerate(chaine_recue):
+        # nous créons un objet bloc avec une copie des données reçues
+        # hauteur, transaction, timestamp, hachage_précedent nonce
+        # mais nous ignorons le premier bloc (bloc de genese) car nous
+        # l'avons cree manuellement
         if idx == 0:
-            continue  # skip genesis bloc
+            # aussi si idx == 0 au passe au bloc suivant directement
+            continue
         bloc = Bloc(
-            donnees_bloc["hauteur"],
-            donnees_bloc["txs"],
-            donnees_bloc["timestamp"],
-            donnees_bloc["hachage_precedent"],
-            donnees_bloc["nonce"],
+            bloc_recu["hauteur"],
+            bloc_recu["txs"],
+            bloc_recu["timestamp"],
+            bloc_recu["hachage_precedent"],
+            bloc_recu["nonce"],
         )
-        preuve = donnees_bloc["hachage"]
-        bloc_ajoute = blockchain_generee.ajouter_bloc(bloc, preuve)
+        # pour chaque bloc, nous vérifions bien que le hachage est valide
+        bloc_ajoute = blockchain_regeneree.ajouter_bloc(
+            bloc, preuve=bloc_recu["hachage"]
+        )
+        # si l'ajout echoue, c'est qu'il y a une erreur et nous soulevons une
+        # exception
         if not bloc_ajoute:
             raise Exception("Le contenu de la chaine a été modifié.")
-    return blockchain_generee
+
+    # Nous renvoyons la blockchain_regeneree
+    return blockchain_regeneree
 
 
 @app.route("/ajouter_bloc", methods=["POST"])
@@ -180,10 +209,10 @@ def consensus():
     for noeud in pairs:
         # Nous appelons la fonction du noeud qui
         # renvois la chaine
-        reponse = requests.get(f"{noeud}chaine")
+        reponse = requests.get(f"{noeud}info_chaine")
         # Nous récupérons les données de la chaine (longueur et blocs)
-        longueur = reponse.json()["longueur"]
         chaine = reponse.json()["chaine"]
+        longueur = len(chaine)
 
         # et nous comparons la longueur de la chaine récupérée avec la longueur de
         # notre chaine.  Nous vérifions aussi la validité de la chaine récupérée
@@ -214,10 +243,10 @@ def announce_nv_bloc(bloc):
     # copie de la blockchain
 
     # pour chaque autre noeud serveur
-    for noeud in pairs:
+    for adresse_noeud in pairs:
         # nous postons à l'url ajouter_bloc les données du bloc (en __dict__)
         requests.post(
-            url=f"{noeud}ajouter_bloc",
+            url=f"{adresse_noeud}ajouter_bloc",
             data=json.dumps(bloc.__dict__, sort_keys=True),
             headers={"Content-Type": "application/json"},
         )
