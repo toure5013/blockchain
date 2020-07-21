@@ -27,10 +27,10 @@ que virtualenv est installé en executant dans un terminal
 
 .. code:: bash
 
-    $python --vesrion
+    $ python --vesrion
     Python 3.8.2
 
-    $virtualenv --version
+    $ virtualenv --version
     virtualenv 20.0.23 from ...
 
 Créer un environnement virtuel
@@ -40,17 +40,17 @@ Linux
 
 .. code:: bash
 
-    $virtualenv MonEnv
-    $cd MonEnv
-    $source bin/activate
+    $ virtualenv MonEnv
+    $ cd MonEnv
+    $ source bin/activate
 
 Windows
 
 .. code:: bash
 
-    >virtualenv MonEnv
-    >dir MonEnv
-    >source Scripts/activate
+    > virtualenv MonEnv
+    > cd MonEnv
+    > Scripts\activate
 
 Télécharger le code
 ~~~~~~~~~~~~~~~~~~~
@@ -60,14 +60,14 @@ et exécutez:
 
 .. code:: bash
 
-    $git clone https://github.com/maliky/blockchain.git
-    $cd blockchain  # ou pour windows, dir blockchain
+    $ git clone https://github.com/maliky/blockchain.git
+    $ cd blockchain  # ou pour windows, dir blockchain
 
 Installer les bibliothèques nécessaires
 
 .. code:: bash
 
-    $pip install -r requirements.txt
+    $ pip install -r requirements.txt
 
 Vous être prêt à lancer le programme
 
@@ -81,13 +81,13 @@ Linux
 
 .. code:: bash
 
-    $export FLASK_APP=noeud_serveur
+    $ export FLASK_APP=noeud_serveur
 
 Windows (cmd.exe) faire
 
 .. code:: bash
 
-    >set FLASK_APP=noeud_serveur
+    > set FLASK_APP=noeud_serveur
 
 pour Windows Powerhsell voir `la doc du projet
 Flask <https://flask.palletsprojects.com/en/1.1.x/cli/#application-discovery>`__.
@@ -99,7 +99,7 @@ En local
 
    .. code:: bash
 
-       $flask run --port 8000
+       $ flask run --port 8000
 
    Le noeud serveur est maintenant accessible en local à
    http://127.0.0.1:8000 Vous pouvez changer cette adresse la variable
@@ -112,7 +112,7 @@ En local
 
    .. code:: bash
 
-       $python lance_client.py
+       $ python lance_client.py
 
    puis visiter http://localhost:5000 avec votre navigateur
 
