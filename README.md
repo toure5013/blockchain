@@ -86,15 +86,19 @@ Vous pouvez changer cette adresse la variable ADRESSE\_NOEUD\_SERVEUR dans <app/
 
 #### Lancer le client
 
-Ouvrez un autre terminal
+Ouvrez un autre terminal puism aller dans le dossier 'MonEnv'
 
--   aller dans le dossier 'MonEnv'
--   activez l'environnement virtuel
--   aller dans le dossier blockchain
+    > cd \votre\chemin\pour\MonEnv
 
-    \> cd \votre\chemin\pour\MonEnv
-    \> Scripts\activate
-    \> cd blockchain
+activez l'environnement virtuel
+
+    > Scripts\activate
+
+aller dans le dossier blockchain
+
+    > cd blockchain
+
+\#+END\_SRC
 
 puis lancer l'application cliente avec
 
