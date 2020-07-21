@@ -115,13 +115,25 @@ En local
 
 #. Lancer le client
 
-   Dans un autre terminal faites
+   Ouvrez un autre terminal
+
+   -  aller dans le dossier 'MonEnv'
+   -  activez l'environnement virtuel
+   -  aller dans le dossier blockchain
+
+   .. code:: bash
+
+       $ cd /votre/chemin/pour/MonEnv
+       $ Scripts\activate
+       cd blockchain
+
+   puis
 
    .. code:: bash
 
        $ python lance_client.py
 
-   puis visiter http://localhost:5000 avec votre navigateur
+   après v puis visiter http://localhost:5000 avec votre navigateur
 
 Avec un adresse accessible depuis l'internet
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
