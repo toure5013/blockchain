@@ -13,7 +13,7 @@ ADRESSE_NOEUD_SERVEUR = "http://127.0.0.1:8000"
 @app.route("/")
 def index():
     reponse = requests.get(f"{ADRESSE_NOEUD_SERVEUR}/info_chaine")
-    contexte= {}
+    contexte = {}
     if reponse.status_code == 200:
         info_chaine = json.loads(reponse.content)
         blockchain = info_chaine["chaine"]
