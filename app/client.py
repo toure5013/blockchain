@@ -46,16 +46,16 @@ def soumettre_zone_texte():
     return redirect("/")
 
 
-@app.route("/senregistrer", methods=["POST"])
-def envoyer_demande_enregistrement():
-    adresse_noeud_existant = request.form['adresse_denregistrement']
-    requests.post(
-        f"{adresse_noeud_existant}/senregistrer_aupres",
-        json={"adresse": ADRESSE_NOEUD_SERVEUR},
-        headers={"Content-type": "application/json"},
-    )
+# @app.route("/senregistrer", methods=["POST"])
+# def envoyer_demande_enregistrement():
+#     adresse_noeud_existant = request.form['adresse_denregistrement']
+#     requests.post(
+#         f"{adresse_noeud_existant}/senregistrer_aupres",
+#         json={"adresse": ADRESSE_NOEUD_SERVEUR},
+#         headers={"Content-type": "application/json"},
+#     )
 
-    return redirect("/")
+#     return redirect("/")
 
 
 def litteral_timestamp(temps_):
