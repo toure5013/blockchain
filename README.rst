@@ -63,6 +63,13 @@ et exécutez:
     $ git clone https://github.com/maliky/blockchain.git
     $ cd blockchain  # ou pour windows, dir blockchain
 
+Vous pourez ensuite mettre à jour le code simplement avec
+
+.. code:: bash
+
+    $ git pull 
+    # ou, $ git pull origin master
+
 Installer les bibliothèques nécessaires
 
 .. code:: bash
