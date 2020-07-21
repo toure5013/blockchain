@@ -207,10 +207,10 @@ def consensus():
     lg_courante = len(blockchain.chaine)
 
     # Pour chaque autre noeud (un noeud est une adresse IP)
-    for noeud in pairs:
-        # Nous appelons la fonction du noeud qui
+    for adresse_noeud in pairs:
+        # Nous appelons la fonction du adresse_noeud qui
         # renvois la chaine
-        reponse = requests.get(f"{noeud}info_chaine")
+        reponse = requests.get(f"{adresse_noeud}info_chaine")
         # Nous récupérons les données de la chaine (longueur et blocs)
         chaine = reponse.json()["chaine"]
         longueur = len(chaine)
@@ -220,7 +220,7 @@ def consensus():
         if longueur > lg_courante and blockchain.verifier_validite_chaine(chaine):
             # si elle est valide et que sa longueur est plus grande que la notre,
             # alors nous l'enregistrons comme la plus longue chaine
-            # avant de vérifier les chaines des autres noeuds serveurs
+            # avant de vérifier les chaines des autres adresse_noeuds serveurs
             lg_courante = longueur
             plus_lg_blockchain = chaine
 
@@ -229,7 +229,6 @@ def consensus():
     if plus_lg_blockchain:
         # Nous remplaçons notre blockchain avec la plus longue chaine
         blockchain = plus_lg_blockchain
-
         # et renvoyons Vrai
         return True
 

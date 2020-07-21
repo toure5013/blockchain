@@ -137,3 +137,19 @@ En local
 
 Avec un adresse accessible depuis l'internet
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Créer un accès (temporait) à notre serveur local depuis internet
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+s'inscrire sur *ngrok.com* et suivre les instructions du site
+
+Utiliser curl pour ajouter les autres noeuds serveur
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: bash
+
+    curl -X POST \
+      address.ngrok.de.votre.partenair/senregistrer_aupres \
+      -H 'Content-Type: application/json' \
+      -d '{"adresse": "http://votre.adresse.ngrok ou http://127.0.0.1:8000"}'
+

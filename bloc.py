@@ -1,3 +1,4 @@
+# fichier bloc.py
 import json
 from hashlib import sha256
 

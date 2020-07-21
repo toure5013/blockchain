@@ -7,7 +7,7 @@ from flask import render_template, redirect, request
 from app import app
 
 # voir ici pour ngrok
-ADRESSE_NOEUD_SERVEUR = "http://127.0.0.1:8000"
+ADRESSE_NOEUD_SERVEUR = "http://b481ee5f4ca8.ngrok.io"
 
 
 @app.route("/")

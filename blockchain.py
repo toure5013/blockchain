@@ -4,14 +4,16 @@ import time
 
 class Blockchain:
     # difficulte pour notre algorithm de preuve par le travail
-    difficulte = 3
+    difficulte = 5  # controle le nombre de zéro au début de hachage des blocs
 
     def __init__(self):
-        self.txs_non_confirmees = []
+        self.txs_non_confirmees = []  # [] pour des listes
         self.chaine = []
 
     def creer_bloc_genese(self):
+        # créer un objet bloc
         bloc_genese = Bloc(0, [], 0, "0")
+        # associer un hachage quelconque pour le premier bloc
         setattr(bloc_genese, "hachage", bloc_genese.calculer_hachage())
         self.chaine.append(bloc_genese)
 
@@ -44,8 +46,8 @@ class Blockchain:
     @staticmethod
     def preuve_de_travail(bloc):
         bloc.nonce = 0
-
         hachage_calcule = bloc.calculer_hachage()
+        # vérifier que le hachage à le bon nombre de zéro
         while not hachage_calcule.startswith("0" * Blockchain.difficulte):
             bloc.nonce += 1
             hachage_calcule = bloc.calculer_hachage()
