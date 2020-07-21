@@ -150,7 +150,12 @@ Utiliser curl pour ajouter les autres noeuds serveur
 .. code:: bash
 
     curl -X POST \
-      address.ngrok.de.votre.partenair/senregistrer_aupres \
+      <address.ngrok.de.votre.partenair>/senregistrer_aupres \
       -H 'Content-Type: application/json' \
       -d '{"adresse": "http://votre.adresse.ngrok ou http://127.0.0.1:8000"}'
 
+Exercices
+~~~~~~~~~
+
+Décommenter les codes dans client.py et essayer d'ajouter une interface
+pour s'enregistrer aurpès des autres noeuds.
