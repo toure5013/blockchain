@@ -2,12 +2,11 @@ Projet Blockchain (en python)
 =============================
 
 Ce repertoire contient du code pour créer sa blockchain. Il a un
-objectif pédagogique et il est donc très commenté. Le code originale
-peut être trouvé en anglais sur
-`python\ :sub:`blockchainapp` <https://github.com/satwikkansal/python_blockchain_app/tree/ibm_blockchain_post>`__
-ou chez
-[[https://developer.ibm.com/technologies/blockchain/tutorials/develop-a-blockchain-application-from-scratch-in-python/
-][IBM]].
+objectif pédagogique et il est donc très commenté. Le code original peut
+être trouvé en anglais dans ce `tutoriel
+d'IBM <https://developer.ibm.com/technologies/blockchain/tutorials/develop-a-blockchain-application-from-scratch-in-python/>`__
+et le code sur `ce répertoire
+git <https://github.com/satwikkansal/python_blockchain_app/tree/master>`__.
 
 Le code créer une application web avec le framework python Flask pour
 écrire, lire et partager des données sur une blockchain.
@@ -28,8 +27,11 @@ que virtualenv est installé en executant dans un terminal
 
 .. code:: bash
 
-    python --vesrion
-    virtualenv --version
+    $python --vesrion
+    Python 3.8.2
+
+    $virtualenv --version
+    virtualenv 20.0.23 from ...
 
 Créer un environnement virtuel
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -38,17 +40,17 @@ Linux
 
 .. code:: bash
 
-    virtualenv monEnv
-    cd monEnv
-    source bin/activate
+    $virtualenv MonEnv
+    $cd MonEnv
+    $source bin/activate
 
 Windows
 
 .. code:: bash
 
-    virtualenv monEnv
-    cd MonEnv
-    source Scripts/activate
+    >virtualenv MonEnv
+    >dir MonEnv
+    >source Scripts/activate
 
 Télécharger le code
 ~~~~~~~~~~~~~~~~~~~
@@ -58,16 +60,14 @@ et exécutez:
 
 .. code:: bash
 
-    git clone https://github.com/maliky/blockchain.git
-    cd blockchain
-
-\_\ :sub:`bash`
+    $git clone https://github.com/maliky/blockchain.git
+    $cd blockchain  # ou pour windows, dir blockchain
 
 Installer les bibliothèques nécessaires
 
 .. code:: bash
 
-    pip install -r requirements.txt
+    $pip install -r requirements.txt
 
 Vous être prêt à lancer le programme
 
@@ -81,13 +81,13 @@ Linux
 
 .. code:: bash
 
-    export FLASK_APP=noeud_serveur
+    $export FLASK_APP=noeud_serveur
 
 Windows (cmd.exe) faire
 
 .. code:: bash
 
-    set FLASK_APP=noeud_serveur
+    >set FLASK_APP=noeud_serveur
 
 pour Windows Powerhsell voir `la doc du projet
 Flask <https://flask.palletsprojects.com/en/1.1.x/cli/#application-discovery>`__.
@@ -99,7 +99,7 @@ En local
 
    .. code:: bash
 
-       flask run --port 8000
+       $flask run --port 8000
 
    Le noeud serveur est maintenant accessible en local à
    http://127.0.0.1:8000 Vous pouvez changer cette adresse la variable
@@ -112,11 +112,9 @@ En local
 
    .. code:: bash
 
-       python lance_client.py
+       $python lance_client.py
 
    puis visiter http://localhost:5000 avec votre navigateur
 
-template
---------
-
-https://jinja.palletsprojects.com/en/2.11.x/templates/#list-of-control-structures
+Avec un adresse accessible depuis l'internet
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
