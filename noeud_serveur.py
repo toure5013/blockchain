@@ -102,8 +102,9 @@ def senregistrer_aupres_noeud_existant():
 
     # voir comment récupérer l'adress ngrok
     # Nous activons la fonction du serveur distant lié à l'url /enregistrer_nv_noeud
+    url = f"{adresse_noeud_serveur_existant}/enregistrer_nv_noeud"
     reponse_info_chaine = requests.post(
-        url="http://{adresse_noeud_serveur_existant}/enregistrer_nv_noeud",
+        url=url,
         data=json.dumps({"adresse_noeud_a_ajouter": request.host_url}),
         headers={"Content-Type": "application/json"},
     )

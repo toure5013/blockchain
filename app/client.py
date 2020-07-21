@@ -13,7 +13,7 @@ ADRESSE_NOEUD_SERVEUR = "http://127.0.0.1:8000"
 @app.route("/")
 def index():
     reponse = requests.get(f"{ADRESSE_NOEUD_SERVEUR}/info_chaine")
-
+    contexte= {}
     if reponse.status_code == 200:
         info_chaine = json.loads(reponse.content)
         blockchain = info_chaine["chaine"]
@@ -48,9 +48,10 @@ def soumettre_zone_texte():
 
 @app.route("/senregistrer", methods=["POST"])
 def envoyer_demande_enregistrement():
+    adresse_noeud_existant = request.form['adresse_denregistrement']
     requests.post(
-        f"{ADRESSE_NOEUD_SERVEUR}/senregistrer_aupres",
-        json={"adresse": request.form["adresse_denregistrement"]},
+        f"{adresse_noeud_existant}/senregistrer_aupres",
+        json={"adresse": ADRESSE_NOEUD_SERVEUR},
         headers={"Content-type": "application/json"},
     )
 
