@@ -92,9 +92,9 @@ Ouvrez un autre terminal
 -   activez l'environnement virtuel
 -   aller dans le dossier blockchain
 
-    > cd \votre\chemin\pour\MonEnv
-    > Scripts\activate
-    > cd blockchain
+    \> cd \votre\chemin\pour\MonEnv
+    \> Scripts\activate
+    \> cd blockchain
 
 puis lancer l'application cliente avec
 
