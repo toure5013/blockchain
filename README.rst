@@ -86,21 +86,17 @@ Variable d'environements
 
 N'oubliez pas cette étape. Elle est importante.
 
--  Linux
+Linux
 
-   #+BEGIN\ :sub:`SRC` bash -i
+.. code:: bash
 
-$ export FLASK\ :sub:`APP`\ =noeud\ :sub:`serveur`
+    $ export FLASK_APP=noeud_serveur
 
-#+END\ :sub:`SRC`
+Windows (cmd.exe) faire
 
--  Windows (cmd.exe) faire
+.. code:: bash
 
-   #+BEGIN\ :sub:`SRC` bash -i
-
-> set FLASK\ :sub:`APP`\ =noeud\ :sub:`serveur`
-
-#+END\ :sub:`SRC`
+    > set FLASK_APP=noeud_serveur
 
 pour Windows Powerhsell voir `la doc du projet
 Flask <https://flask.palletsprojects.com/en/1.1.x/cli/#application-discovery>`__.
