@@ -40,7 +40,7 @@ Windows
 > Scripts\activate
 #+END_SRC
 
-Par la suite exécuter @@bash:deactivate@@ pour désactiver votre environnement virtuel.
+Par la suite exécuter /deactivate/ pour désactiver votre environnement virtuel.
 
 
 *** Télécharger le code
