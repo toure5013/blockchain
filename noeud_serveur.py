@@ -13,7 +13,7 @@ print(__name__)
 blockchain = Blockchain()
 blockchain.creer_bloc_genese()
 
-pairs: Set[str] = set()
+adrs_noeuds_serveurs: Set[str] = set()
 
 
 @app.route("/nvl_tx", methods=["POST"])
@@ -44,8 +44,10 @@ def recupe_info_chaine():
     # et Renvoyons un dictionnaire au format JSON (pour une communication via internet)
     # ce dictionnaire contient la longueur de la chaine,
     # la chaine comme une liste  de bloc au format dictionnaire
-    # la liste des adresses des pairs
-    return json.dumps({"chaine": blockhain_brute, "pairs": list(pairs)})
+    # la liste des adrs_noeuds_serveurs
+    return json.dumps(
+        {"chaine": blockhain_brute, "adrs_noeuds_serveurs": list(adrs_noeuds_serveurs)}
+    )
 
 
 @app.route("/miner", methods=["GET"])
@@ -76,32 +78,33 @@ def miner_txs_non_confirmees():
 
 @app.route("/enregistrer_nv_noeud", methods=["POST"])
 def enregistrer_nv_noeud():
-    # Nous recupérons la adresse à ajouter aux pairs
+    # Nous recupérons l'adresse à ajouter aux adrs_noeuds_serveurs
     adresse_noeud_a_ajouter = request.get_json()["adresse_noeud_a_ajouter"]
 
     # Nous vérifions qu'elle est valide
     if not adresse_noeud_a_ajouter:
         return "Données invalides.", 400
 
-    # Nous l'ajoutons alors à l'ensemble des pairs
-    pairs.add(adresse_noeud_a_ajouter)
+    # Nous l'ajoutons alors à l'ensemble des adrs_noeuds_serveurs
+    adrs_noeuds_serveurs.add(adresse_noeud_a_ajouter)
 
-    # et nous renvoyons les informations liés à notre chaine
-    # le nombre de bloc, les blocs, et les pairs que nous connaissons
+    # et nous renvoyons les informations liées à notre chaine, c'est à dire
+    # le nombre de bloc, les blocs, et les adrs_noeuds_serveurs que nous connaissons
     return recupe_info_chaine()
 
 
 @app.route("/senregistrer_aupres", methods=["POST"])
 def senregistrer_aupres_noeud_existant():
     # Nous récupérons l'adresse du noeud serveur auprès duquel nous voulons nous
-    # enregistrer.  Cette information est posté avec le client
+    # enregistrer.  Cette information est postée avec via le client
     adresse_noeud_serveur_existant = request.get_json()["adresse"]
 
     if not adresse_noeud_serveur_existant:
         return "Données invalides.", 400
 
-    # voir comment récupérer l'adress ngrok
-    # Nous activons la fonction du serveur distant lié à l'url /enregistrer_nv_noeud
+    # Nous activons la fonction 'enregistrer_nv_noeud' du serveur auprès duquel
+    # nous voulons nous enregistrer.
+    # nous lui envoyons notre adresse
     url = f"{adresse_noeud_serveur_existant}/enregistrer_nv_noeud"
     reponse_info_chaine = requests.post(
         url=url,
@@ -109,15 +112,18 @@ def senregistrer_aupres_noeud_existant():
         headers={"Content-Type": "application/json"},
     )
 
-    # Si l'appel cest bien passé
+    # Si l'appel c'est bien passé
     if reponse_info_chaine.status_code == 200:
+        # nous éditons de façon global la blockchain et les adrs_noeuds_serveurs
         global blockchain
-        global pairs
+        global adrs_noeuds_serveurs
         # Nous mettons à jour notre blockchain avec la copie renvoyée par le
         # noeud serveur où nous nous sommes enregistré
+        # c'est notre blockchain qui se met à jour à partir de celle du noeud
+        # où nous enregistrons
         blockchain = regenere_blockchain_avec(reponse_info_chaine.json()["chaine"])
-        # Nous mettons à jour les pairs que nous connaissons
-        pairs.update(reponse_info_chaine.json()["pairs"])
+        # Nous mettons à jour les adrs_noeuds_serveurs que nous connaissons
+        adrs_noeuds_serveurs.update(reponse_info_chaine.json()["adrs_noeuds_serveurs"])
         # et Renvoyons un messsage de succès
         return "Enregistrement Réussit", 200
     else:
@@ -207,7 +213,7 @@ def consensus():
     lg_courante = len(blockchain.chaine)
 
     # Pour chaque autre noeud (un noeud est une adresse IP)
-    for adresse_noeud in pairs:
+    for adresse_noeud in adrs_noeuds_serveurs:
         # Nous appelons la fonction du adresse_noeud qui
         # renvois la chaine
         reponse = requests.get(f"{adresse_noeud}info_chaine")
@@ -243,7 +249,7 @@ def announce_nv_bloc(bloc):
     # copie de la blockchain
 
     # pour chaque autre noeud serveur
-    for adresse_noeud in pairs:
+    for adresse_noeud in adrs_noeuds_serveurs:
         # nous postons à l'url ajouter_bloc les données du bloc (en __dict__)
         requests.post(
             url=f"{adresse_noeud}ajouter_bloc",

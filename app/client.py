@@ -7,13 +7,13 @@ from flask import render_template, redirect, request
 from app import app
 
 # voir ici pour ngrok
-# ADRESSE_NOEUD_SERVEUR = "http://b481ee5f4ca8.ngrok.io"
-ADRESSE_NOEUD_SERVEUR = "http://127.0.0.1:8000"
+# ADRESSE_MON_SERVEUR = "http://b481ee5f4ca8.ngrok.io"
+ADRESSE_MON_SERVEUR = "http://127.0.0.1:8000"
 
 
 @app.route("/")
 def index():
-    reponse = requests.get(f"{ADRESSE_NOEUD_SERVEUR}/info_chaine")
+    reponse = requests.get(f"{ADRESSE_MON_SERVEUR}/info_chaine")
     contexte = {}
     if reponse.status_code == 200:
         info_chaine = json.loads(reponse.content)
@@ -25,9 +25,9 @@ def index():
 
         contexte = {
             "titre": "Blockchain: un réseau décentralisé pour partager du contenu",
-            "adresse_noeud": ADRESSE_NOEUD_SERVEUR,
+            "adresse_noeud": ADRESSE_MON_SERVEUR,
             "temps_litteral": litteral_timestamp,
-            "pairs": info_chaine["pairs"],
+            "adrs_noeuds_serveurs": info_chaine["adrs_noeuds_serveurs"],
             "lg_chaine": len(info_chaine["chaine"]),
             "blockchain": blockchain,
         }
@@ -39,7 +39,7 @@ def index():
 def soumettre_zone_texte():
 
     requests.post(
-        f"{ADRESSE_NOEUD_SERVEUR}/nvl_tx",
+        f"{ADRESSE_MON_SERVEUR}/nvl_tx",
         json={"auteur": request.form["auteur"], "contenu": request.form["contenu"],},
         headers={"Content-type": "application/json"},
     )
@@ -47,16 +47,16 @@ def soumettre_zone_texte():
     return redirect("/")
 
 
-# @app.route("/senregistrer", methods=["POST"])
-# def envoyer_demande_enregistrement():
-#     adresse_noeud_existant = request.form['adresse_denregistrement']
-#     requests.post(
-#         f"{adresse_noeud_existant}/senregistrer_aupres",
-#         json={"adresse": ADRESSE_NOEUD_SERVEUR},
-#         headers={"Content-type": "application/json"},
-#     )
+@app.route("/senregistrer", methods=["POST"])
+def envoyer_demande_enregistrement():
+    adresse_noeud_existant = request.form['adresse_denregistrement']
+    requests.post(
+        f"{adresse_noeud_existant}/senregistrer_aupres",
+        json={"adresse": ADRESSE_MON_SERVEUR},
+        headers={"Content-type": "application/json"},
+    )
 
-#     return redirect("/")
+    return redirect("/")
 
 
 def litteral_timestamp(temps_):

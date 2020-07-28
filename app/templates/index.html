@@ -14,16 +14,16 @@
   </form>
 
 
-  <!-- <form action="/senregistrer" name="senregistrer" id="textform" method="post"> -->
-  <!--   <input type="text" name="adresse_denregistrement" placeholder="Entrer l'adresse d'un noeud_serveur à ajouter à la liste des pairs"> -->
-  <!--   <input type="Submit" value="Ajouter"> -->
-  <!-- </form> -->
+  <form action="/senregistrer" name="senregistrer" id="textform" method="post">
+    <input type="text" name="adresse_denregistrement" placeholder="Entrer l'adresse d'un noeud_serveur auprès duquel nous voulons nous enregistrer">
+    <input type="Submit" value="Ajouter">
+  </form>
 
-<!-- <ul class="list-group list-group-horizontal"> -->
-<!--   {% for adresse in pairs %} -->
-<!--   <li class="list-group-item">{{pair}}</li> -->
-<!--   {% endfor %} -->
-<!-- </ul> -->
+<ul class="list-group list-group-horizontal">
+  {% for adresse in pairs %}
+  <li class="list-group-item">{{pair}}</li>
+  {% endfor %}
+</ul>
 
 
 <br>
