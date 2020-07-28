@@ -1,6 +1,6 @@
 #+EXPORT_FILE_NAME: README
 #+EXPORT_LANGUAGE: fr
-#+OPTIONS: H:6 \n:nil toc:3 creator:nil date:nil author:t num:t broken-links:t ^:{}
+#+OPTIONS: H:6 \n:nil toc:3 creator:nil date:nil author:t num:nil broken-links:t ^:{}
 # Use pandoc pour convertir en .md
 
 * Projet Blockchain (en python) 
@@ -89,21 +89,17 @@ pour Windows Powerhsell voir [[https://flask.palletsprojects.com/en/1.1.x/cli/#a
 #+BEGIN_SRC bash  -i
 flask run --port 8000
 #+END_SRC
-Le noeud serveur est maintenant accessible en local à l'adresse http://127.0.0.1:8000 .
+Le noeud serveur est maintenant accessible en local à l'adresse par défaut http://127.0.0.1:8000, mais vous avez besoin d'un client pour interagir avec depuis le navigateur.
 
-Lors des tests à distance, (après avoir installé ngrok), vous devrez changer cette adresse en modifiant la variable ADRESSE_NOEUD_SERVEUR dans [[file:app/client.py]]
+Lors des tests à distance, (c'est-à-dire après avoir installé ngrok), vous devrez changer cette adresse en modifiant la variable ADRESSE_NOEUD_SERVEUR dans [[file:app/client.py]]
 
 **** Lancer le client
 
-Ouvrez un autre terminal puis aller dans le dossier '<VosInitiales>Envs'
-
-#+BEGIN_SRC bash  -i
-> cd \votre\chemin\pour\<VosInitiales>Envs
-#+END_SRC
-
+Ouvrez *un autre terminal* puis aller dans le dossier '<VosInitiales>Envs'
 activez l'environnement virtuel
 
 #+BEGIN_SRC bash  -i
+> cd \votre\chemin\pour\<VosInitiales>Envs
 > Scripts\activate
 #+END_SRC
 
@@ -119,7 +115,7 @@ puis lancer l'application cliente avec
 > python lance_client.py
 #+END_SRC
 
-L'interface est accessible a http://localhost:5000 
+L'interface est accessible a [[http://localhost:5000][http://localhost:5000]].
 
 *** Avec un adresse accessible depuis l'internet
 
@@ -135,7 +131,7 @@ curl -X POST \
   -d '{"adresse": "http://votre.adresse.ngrok ou http://127.0.0.1:8000"}'
 #+END_SRC
 
-*** Exercices
+** Exercices                                                       :noexport:
 Décommenter les codes dans client.py et essayer d'ajouter une interface pour s'enregistrer aurpès des autres noeuds.
 via l'interface cliente
 
