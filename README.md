@@ -1,129 +1,173 @@
+broken-links:t \^:{}
 
+Projet Blockchain (en python)
+=============================
 
-# Projet Blockchain (en python)
+Ce repertoire contient du code pour créer sa blockchain. Il a un
+objectif pédagogique et il est donc très commenté. Il s'inspire d'un
+[tutoriel
+d'IBM](https://developer.ibm.com/technologies/blockchain/tutorials/develop-a-blockchain-application-from-scratch-in-python/)
+en anglais, dont le code est aussi sur [ce répertoire
+git](https://github.com/satwikkansal/python_blockchain_app/tree/master).
 
-Ce repertoire contient du code pour créer sa blockchain. Il a un objectif pédagogique et il est donc très commenté.  Le code original peut être trouvé en anglais dans ce [tutoriel d'IBM](https://developer.ibm.com/technologies/blockchain/tutorials/develop-a-blockchain-application-from-scratch-in-python/) et le code sur [ce répertoire git](https://github.com/satwikkansal/python_blockchain_app/tree/master).
+Le code crée une application web avec le framework python
+[Flask](https://palletsprojects.com/p/flask/) pour écrire, lire et
+partager des données sur une blockchain. Il s'agit d'un serveur et un
+client blockchain.
 
-Le code créer une application web avec le framework python Flask pour écrire, lire et partager des données sur une blockchain.  
+Il n'y a pas de meilleure manière d'apprendre ce qu'est la blockchain
+que d'en construire une.
 
-Il n'y a pas de meilleure manière d'apprendre ce qu'est la blockchain que d'en construire une.
+Le code peut être copié et testé localement, puis sur différentes
+machines distantes à l'aide d'un service comme
+[ngrok](https://ngrok.com) qui permet de rendre une adresse réseau
+locale visible depuis sur internet.
 
-Le code peut être copié et testé sur différentes machines distantes afin de tester à l'aide d'un service comme [ngrok](https://ngrok.com).  Ce dernier vous permet de rendre une  adresse réseau locale visible depuis sur internet.
+Pré-requis
+----------
 
+Assurez-vous d'avoir une version récente de python (par exemple 3.8) et
+que virtualenv est installé. Executant dans un terminal.
 
-## Pré-requis
+``` {.bash}
+$ python --vesrion
+Python 3.8.2
 
-Assurez-vous d'avoir une version récente de python (par exemple 3.8) et que virtualenv est installé en executant dans un terminal
+$ virtualenv --version
+virtualenv 20.0.23 from ...
+```
 
-    $ python --vesrion
-    Python 3.8.2
-    
-    $ virtualenv --version
-    virtualenv 20.0.23 from ...
-
+Notez que je distingue ici l'invite de commande Linux et windows avec
+respectivement '\$' et '&gt;'. Si rien n'est spécifié c'est probablement
+exactement les même commandes.
 
 ### Créer un environnement virtuel
 
 Linux
 
-    $ virtualenv MonEnv
-    $ cd MonEnv
-    $ source bin/activate
+``` {.bash}
+$ virtualenv <VosInitiales>Envs
+$ cd <VosInitiales>Envs
+$ source bin/activate
+```
 
 Windows
 
-    > virtualenv MonEnv
-    > cd MonEnv
-    > Scripts\activate
-
+``` {.bash}
+> virtualenv <VosInitiales>Envs
+> cd <VosInitiales>Envs
+> Scripts\activate
+```
 
 ### Télécharger le code
 
-Assurez-vous d'avoir [git](https://git-scm.com/download/win) installé et exécutez:
+Assurez-vous d'avoir [git](https://git-scm.com/download/win) installé
 
-    $ git clone https://github.com/maliky/blockchain.git
-    $ cd blockchain  # ou pour windows, dir blockchain
+``` {.bash}
+$ git --version
+git version 2.17.1
+```
+
+puis exécutez
+
+``` {.bash}
+$ git clone https://github.com/maliky/blockchain.git
+$ cd blockchain  # ou pour windows, dir blockchain
+```
 
 Vous pourez ensuite mettre à jour le code simplement avec
 
-    $ git pull 
-    # ou, $ git pull origin master
+``` {.bash}
+$ git pull 
+# ou, $ git pull origin master
+```
 
 Installer les bibliothèques nécessaires
 
-    $ pip install -r requirements.txt
+``` {.bash}
+$ pip install -r requirements.txt
+```
 
 Vous être prêt à lancer le programme
 
-
-## Lancement
-
+Lancement
+---------
 
 ### Variable d'environements
 
-N'oubliez pas cette étape.  Elle est importante.
-Linux
+N'oubliez pas cette étape. Elle est importante. Linux
 
-    $ export FLASK_APP=noeud_serveur
+``` {.bash}
+$ export FLASK_APP=noeud_serveur
+```
 
 Windows (cmd.exe) faire
 
-    > set FLASK_APP=noeud_serveur
+``` {.bash}
+> set FLASK_APP=noeud_serveur
+```
 
-pour Windows Powerhsell voir [la doc du projet Flask](https://flask.palletsprojects.com/en/1.1.x/cli/#application-discovery).
-
+pour Windows Powerhsell voir [la doc du projet
+Flask](https://flask.palletsprojects.com/en/1.1.x/cli/#application-discovery).
 
 ### En local
 
-
 #### Lancer le serveur
 
-    $ flask run --port 8000
+``` {.bash}
+$ flask run --port 8000
+```
 
-Le noeud serveur est maintenant accessible en local à <http://127.0.0.1:8000>
-Vous pouvez changer cette adresse la variable ADRESSE\_NOEUD\_SERVEUR dans <app/client.py>
-
+Le noeud serveur est maintenant accessible en local à
+<http://127.0.0.1:8000> Vous pouvez changer cette adresse la variable
+ADRESSE~NOEUDSERVEUR~ dans [file:app/client.py](app/client.py)
 
 #### Lancer le client
 
-Ouvrez un autre terminal puism aller dans le dossier 'MonEnv'
+Ouvrez un autre terminal puism aller dans le dossier
+'&lt;VosInitiales&gt;Envs'
 
-    > cd \votre\chemin\pour\MonEnv
+``` {.bash}
+> cd \votre\chemin\pour\<VosInitiales>Envs
+```
 
 activez l'environnement virtuel
 
-    > Scripts\activate
+``` {.bash}
+> Scripts\activate
+```
 
 aller dans le dossier blockchain
 
-    > cd blockchain
-
-\#+END\_SRC
+``` {.bash}
+> cd blockchain
+```
 
 puis lancer l'application cliente avec
 
-    > python lance_client.py
+``` {.bash}
+> python lance_client.py
+```
 
-L'interface est accessible a <http://localhost:5000> 
-
+L'interface est accessible a <http://localhost:5000>
 
 ### Avec un adresse accessible depuis l'internet
 
-
 #### Créer un accès (temporaire) à notre serveur local depuis internet
 
-S'inscrire sur [ngrok.com](https://ngrok.com) et suivre les instructions du site
-
+S'inscrire sur [ngrok.com](https://ngrok.com) et suivre les instructions
+du site
 
 #### Utiliser curl pour ajouter les autres noeuds serveur
 
-    curl -X POST \
-      <address.ngrok.de.votre.partenair>/senregistrer_aupres \
-      -H 'Content-Type: application/json' \
-      -d '{"adresse": "http://votre.adresse.ngrok ou http://127.0.0.1:8000"}'
-
+``` {.bash}
+curl -X POST \
+  <address.ngrok.de.votre.partenair>/senregistrer_aupres \
+  -H 'Content-Type: application/json' \
+  -d '{"adresse": "http://votre.adresse.ngrok ou http://127.0.0.1:8000"}'
+```
 
 ### Exercices
 
-Décommenter les codes dans client.py et essayer d'ajouter une interface pour s'enregistrer aurpès des autres noeuds.
-
+Décommenter les codes dans client.py et essayer d'ajouter une interface
+pour s'enregistrer aurpès des autres noeuds. via l'interface cliente
