@@ -7,6 +7,7 @@ import requests
 
 from blockchain import Blockchain
 from bloc import Bloc
+from app.config_locale import ADRESSE_MON_SERVEUR
 
 app = Flask(__name__)
 blockchain = Blockchain()
@@ -111,6 +112,10 @@ def senregistrer_aupres_noeud_existant():
         headers={"Content-Type": "application/json"},
     )
 
+    assert (
+        ADRESSE_MON_SERVEUR == request.host_url
+    ), f"{ADRESSE_MON_SERVEUR}, {request.host_url}"
+
     # Si l'appel c'est bien passé
     if reponse_info_chaine.status_code == 200:
         # nous éditons de façon global la blockchain et les adrs_noeuds_serveurs
@@ -121,10 +126,15 @@ def senregistrer_aupres_noeud_existant():
         # c'est notre blockchain qui se met à jour à partir de celle du noeud
         # où nous enregistrons
         blockchain = regenere_blockchain_avec(reponse_info_chaine.json()["chaine"])
-        # Nous mettons à jour les adrs_noeuds_serveurs que nous connaissons
-        # l'adresse du serveur où nous enregistrons et aussi ses adresses connues
-        adrs_du_serveur_distant = reponse_info_chaine.json()["adrs_noeuds_serveurs"]
-        adrs_noeuds_serveurs.update(adr_serveur_distant, adrs_du_serveur_distant)
+        # Nous mettons à jour les adrs_noeuds_serveurs que nous connaissons avec
+        # l'adresse du serveur où nous enregistrons et aussi ses adresses connues mais
+        # nous retirons la notre
+        adrs_du_serveur_distant = set(
+            reponse_info_chaine.json()["adrs_noeuds_serveurs"]
+        )
+        adrs_noeuds_serveurs.update(
+            {adr_serveur_distant}, adrs_du_serveur_distant - {ADRESSE_MON_SERVEUR}
+        )
         # et Renvoyons un messsage de succès
         return "Enregistrement Réussit", 200
     else:
@@ -217,7 +227,7 @@ def consensus():
     for adresse_noeud in adrs_noeuds_serveurs:
         # Nous appelons la fonction du adresse_noeud qui
         # renvois la chaine
-        reponse = requests.get(f"{adresse_noeud}info_chaine")
+        reponse = requests.get(f"{adresse_noeud}/info_chaine")
         # Nous récupérons les données de la chaine (longueur et blocs)
         chaine = reponse.json()["chaine"]
         longueur = len(chaine)
