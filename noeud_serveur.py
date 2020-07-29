@@ -9,6 +9,8 @@ import requests
 from typing import Set
 import logging
 logger = logging.getLogger(__name__)
+logger.warning('logging debug')
+logging.basicConfig(level='DEBUG')
 logger.setLevel('DEBUG')
 
 app = Flask(__name__)
@@ -99,15 +101,16 @@ def enregistrer_nv_noeud():
 def senregistrer_aupres_noeud_existant():
     # Nous récupérons l'adresse du noeud serveur auprès duquel nous voulons nous
     # enregistrer.  Cette information est postée avec via le client
-    adresse_noeud_serveur_existant = request.get_json()["adresse"]
+    adresse_serveur_denregistrement = request.get_json()["adresse"]
     logger.debug(f"DEBGING: {request}")
-    if not adresse_noeud_serveur_existant:
+    print(f"DEBGING: {request}")
+    if not adresse_serveur_denregistrement:
         return "Données invalides.", 400
 
     # Nous activons la fonction 'enregistrer_nv_noeud' du serveur auprès duquel
     # nous voulons nous enregistrer.
     # nous lui envoyons notre adresse
-    url = f"{adresse_noeud_serveur_existant}/enregistrer_nv_noeud"
+    url = f"{adresse_serveur_denregistrement}/enregistrer_nv_noeud"
     reponse_info_chaine = requests.post(
         url=url,
         data=json.dumps({"adresse_noeud_a_ajouter": request.host_url}),
@@ -115,6 +118,7 @@ def senregistrer_aupres_noeud_existant():
     )
 
     logger.debug(f"{url} et {reponse_info_chaine}")
+    print(f"{url} et {reponse_info_chaine}")
     # Si l'appel c'est bien passé
     if reponse_info_chaine.status_code == 200:
         # nous éditons de façon global la blockchain et les adrs_noeuds_serveurs
