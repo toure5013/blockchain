@@ -7,8 +7,8 @@ from flask import render_template, redirect, request
 from app import app
 
 # voir ici pour ngrok
-# ADRESSE_MON_SERVEUR = "http://b481ee5f4ca8.ngrok.io"
-ADRESSE_MON_SERVEUR = "http://127.0.0.1:8000"
+ADRESSE_MON_SERVEUR = "https://0792e119f427.ngrok.io"
+#ADRESSE_MON_SERVEUR = "http://127.0.0.1:8000"
 
 
 @app.route("/")
@@ -51,7 +51,7 @@ def soumettre_zone_texte():
 def envoyer_demande_enregistrement():
     adresse_noeud_existant = request.form['adresse_denregistrement']
     requests.post(
-        f"{adresse_noeud_existant}/senregistrer_aupres",
+        f"{adresse_noeud_existant}senregistrer_aupres",
         json={"adresse": ADRESSE_MON_SERVEUR},
         headers={"Content-type": "application/json"},
     )
