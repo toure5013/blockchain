@@ -1,6 +1,7 @@
 *zip
 static*
 *.pyc
+config_locale.py
 **/*.pyc
 **~
 *#*

@@ -5,7 +5,7 @@ import requests
 from flask import render_template, redirect, request
 
 from app import app
-from app.settings import ADRESSE_MON_SERVEUR
+from app.config_locale import ADRESSE_MON_SERVEUR
 
 
 @app.route("/")
