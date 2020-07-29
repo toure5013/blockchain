@@ -1,17 +1,12 @@
 import json
 import time
-from blockchain import Blockchain
-from bloc import Bloc
+from typing import Set
 
 from flask import Flask, request
 import requests
 
-from typing import Set
-import logging
-logger = logging.getLogger(__name__)
-logger.warning('logging debug')
-logging.basicConfig(level='DEBUG')
-logger.setLevel('DEBUG')
+from blockchain import Blockchain
+from bloc import Bloc
 
 app = Flask(__name__)
 blockchain = Blockchain()
@@ -83,14 +78,14 @@ def miner_txs_non_confirmees():
 @app.route("/enregistrer_nv_noeud", methods=["POST"])
 def enregistrer_nv_noeud():
     # Nous recupérons l'adresse à ajouter aux adrs_noeuds_serveurs
-    adresse_noeud_a_ajouter = request.get_json()["adresse_noeud_a_ajouter"]
+    adresse_a_ajouter = request.get_json()["adresse_a_ajouter"]
 
     # Nous vérifions qu'elle est valide
-    if not adresse_noeud_a_ajouter:
+    if not adresse_a_ajouter:
         return "Données invalides.", 400
 
     # Nous l'ajoutons alors à l'ensemble des adrs_noeuds_serveurs
-    adrs_noeuds_serveurs.add(adresse_noeud_a_ajouter)
+    adrs_noeuds_serveurs.add(adresse_a_ajouter)
 
     # et nous renvoyons les informations liées à notre chaine, c'est à dire
     # le nombre de bloc, les blocs, et les adrs_noeuds_serveurs que nous connaissons
@@ -101,24 +96,21 @@ def enregistrer_nv_noeud():
 def senregistrer_aupres_noeud_existant():
     # Nous récupérons l'adresse du noeud serveur auprès duquel nous voulons nous
     # enregistrer.  Cette information est postée avec via le client
-    adresse_serveur_denregistrement = request.get_json()["adresse"]
-    logger.debug(f"DEBGING: {request}")
-    print(f"DEBGING: {request}")
-    if not adresse_serveur_denregistrement:
+    adr_serveur_distant = request.get_json()["adr_serveur_distant"]
+
+    if not adr_serveur_distant:
         return "Données invalides.", 400
 
     # Nous activons la fonction 'enregistrer_nv_noeud' du serveur auprès duquel
     # nous voulons nous enregistrer.
     # nous lui envoyons notre adresse
-    url = f"{adresse_serveur_denregistrement}/enregistrer_nv_noeud"
+    url = f"{adr_serveur_distant}/enregistrer_nv_noeud"
     reponse_info_chaine = requests.post(
         url=url,
-        data=json.dumps({"adresse_noeud_a_ajouter": request.host_url}),
+        data=json.dumps({"adresse_a_ajouter": request.host_url}),
         headers={"Content-Type": "application/json"},
     )
 
-    logger.debug(f"{url} et {reponse_info_chaine}")
-    print(f"{url} et {reponse_info_chaine}")
     # Si l'appel c'est bien passé
     if reponse_info_chaine.status_code == 200:
         # nous éditons de façon global la blockchain et les adrs_noeuds_serveurs
@@ -130,7 +122,9 @@ def senregistrer_aupres_noeud_existant():
         # où nous enregistrons
         blockchain = regenere_blockchain_avec(reponse_info_chaine.json()["chaine"])
         # Nous mettons à jour les adrs_noeuds_serveurs que nous connaissons
-        adrs_noeuds_serveurs.update(reponse_info_chaine.json()["adrs_noeuds_serveurs"])
+        # l'adresse du serveur où nous enregistrons et aussi ses adresses connues
+        adrs_du_serveur_distant = reponse_info_chaine.json()["adrs_noeuds_serveurs"]
+        adrs_noeuds_serveurs.update(adr_serveur_distant, adrs_du_serveur_distant)
         # et Renvoyons un messsage de succès
         return "Enregistrement Réussit", 200
     else:

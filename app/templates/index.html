@@ -6,31 +6,41 @@
 {% block content %}
 <br>
 
-  <form action="/soumettre" name="soumettre" id="textform" method="post">
-    <textarea name="contenu" rows="4" cols="50" placeholder="Ecrivez ce que vous voulez publier sur la chaine..."></textarea>
-    <br>
-    <input type="text" name="auteur" placeholder="Votre Nom (ou signature)">
-    <input type="Submit" value="Publier">
-  </form>
+<!-- Formulaire pour soumettre le message et l'auteur -->
+
+<form action="/soumettre" name="soumettre" id="textform" method="post">
+  <textarea name="contenu" rows="4" cols="50" placeholder="Ecrivez ce que vous voulez publier sur la chaine..."></textarea>
+  <br>
+  <input type="text" name="auteur" placeholder="Votre Nom (ou signature)">
+  <input type="Submit" value="Publier">
+</form>
 
 
-  <form action="/senregistrer" name="senregistrer" id="textform" method="post">
-    <input type="text" name="adresse_denregistrement" placeholder="Entrer l'adresse d'un noeud_serveur auprès duquel nous voulons nous enregistrer">
-    <input type="Submit" value="Ajouter">
-  </form>
+<!-- Formulaire pour s'enregister auprès d'un autre noeud et liste des noeuds suivis-->
+
+<form action="/senregistrer" name="senregistrer" id="textform" method="post">
+  <input type="text" name="adresse_denregistrement" placeholder="Entrer l'adresse d'un noeud_serveur auprès duquel nous voulons nous enregistrer">
+  <input type="Submit" value="Ajouter">
+</form>
+
+<!-- adresses des noeuds serveur suivis -->
 
 <ul class="list-group list-group-horizontal">
-  {% for adresse in pairs %}
-  <li class="list-group-item">{{pair}}</li>
+  {% for adresse in adrs_noeuds_serveurs %}
+  <li class="list-group-item">{{adresse}}</li>
   {% endfor %}
 </ul>
 
 
 <br>
+<!-- Boutons pour miner, synchroniser, récupérer l'info de la chaine et les tx en attentes -->
+
 <a href="{{adresse_noeud}}/miner" target="_blank"><button>Demander le minage</button></a>
 <a href="/"><button>Resynchroniser</button></a>
 <a href="{{adresse_noeud}}/info_chaine"><button>Afficher les infos de votre chaine (en brute)</button></a>
 <a href="{{adresse_noeud}}/tx_en_attente"><button>Voir les transactions en attente (memepool)</button></a>
+
+<!-- Partie qui affiche les blocs de transaction -->
 
 <div  class="container">
   {% for bloc in blockchain %}
@@ -58,7 +68,7 @@
 	</div>
 	{% endfor %} 
       </div>
-    <p class="card-text">hachage du bloc précédent : {{bloc.hachage_precedent}}</p>
+      <p class="card-text">hachage du bloc précédent : {{bloc.hachage_precedent}}</p>
     </div>
 
   </div>
