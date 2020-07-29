@@ -4,7 +4,7 @@ import time
 
 class Blockchain:
     # difficulte pour notre algorithm de preuve par le travail
-    difficulte = 5  # controle le nombre de zéro au début de hachage des blocs
+    difficulte = 3  # controle le nombre de zéro au début de hachage des blocs
 
     def __init__(self):
         self.txs_non_confirmees = []  # [] pour des listes

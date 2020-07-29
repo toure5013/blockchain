@@ -7,9 +7,11 @@ from flask import Flask, request
 import requests
 
 from typing import Set
+import logging
+logger = logging.getLogger(__name__)
+logger.setLevel('DEBUG')
 
 app = Flask(__name__)
-print(__name__)
 blockchain = Blockchain()
 blockchain.creer_bloc_genese()
 
@@ -98,7 +100,7 @@ def senregistrer_aupres_noeud_existant():
     # Nous récupérons l'adresse du noeud serveur auprès duquel nous voulons nous
     # enregistrer.  Cette information est postée avec via le client
     adresse_noeud_serveur_existant = request.get_json()["adresse"]
-
+    logger.debug(f"DEBGING: {request}")
     if not adresse_noeud_serveur_existant:
         return "Données invalides.", 400
 
@@ -112,6 +114,7 @@ def senregistrer_aupres_noeud_existant():
         headers={"Content-Type": "application/json"},
     )
 
+    logger.debug(f"{url} et {reponse_info_chaine}")
     # Si l'appel c'est bien passé
     if reponse_info_chaine.status_code == 200:
         # nous éditons de façon global la blockchain et les adrs_noeuds_serveurs
