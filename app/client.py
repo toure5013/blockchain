@@ -47,6 +47,9 @@ def soumettre_zone_texte():
 @app.route("/senregistrer", methods=["POST"])
 def envoyer_demande_enregistrement():
     adresse_denregistrement = request.form["adresse_denregistrement"]
+    # on s'assure que la fin se termine par '/'
+    adresse_denregistrement += '/' if not adresse_denregistrement.endswith('/') else ''
+    
     reponse = requests.post(
         f"{ADRESSE_MON_SERVEUR}senregistrer_aupres",
         json={"adr_serveur_distant": adresse_denregistrement},
