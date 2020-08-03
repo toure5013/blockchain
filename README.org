@@ -14,8 +14,7 @@ Le code peut être copié et testé localement, puis sur différentes machines d
 
 
 ** Pré-requis 
-Assurez-vous d'avoir une version récente de python (par exemple 3.8) et que virtualenv est installé.
-Executant dans un terminal.
+Assurez-vous d'avoir une version récente de python (par exemple 3.8) et que virtualenv est installé en executant dans un *terminal (ou invite de commande windows)*
 #+BEGIN_SRC bash  -i
 $ python --vesrion
 Python 3.8.2
@@ -25,18 +24,24 @@ virtualenv 20.0.23 from ...
 #+END_SRC
 
 /Notez que je distingue ici l'invite de commande Linux et windows et les commentaires avec respectivement '$',  '>' et '#'.  Si rien n'est spécifié c'est probablement exactement les même commandes ou alors c'est qu'il s'agit du retour d'une commande./
- 
+
+Si python n'est pas installé voir [[https://python.org][python.org]] 
+Si virtualenv n'est pas installé l'installer avec pip en faisant simplement `pip install virtualenv`.   Idéalement est installé automatiquement avec Python.  Si ce n'est pas le cas télécharger et exécuter [[https://bootstrap.pypa.io/get-pip.py][get-pip.py]] (voir [[https://pip.pypa.io/en/stable/installing/][site officiel]])
+
 *** Créer un environnement virtuel (et l'activer)
+
+#+BEGIN_SRC bash  -i
+virtualenv <VosInitiales>Envs
+cd <VosInitiales>Envs
+#+END_SRC
+
 Linux
 #+BEGIN_SRC bash  -i
-$ virtualenv <VosInitiales>Envs
-$ cd <VosInitiales>Envs
 $ source bin/activate
 #+END_SRC
+
 Windows
 #+BEGIN_SRC bash  -i
-> virtualenv <VosInitiales>Envs
-> cd <VosInitiales>Envs
 > Scripts\activate
 #+END_SRC
 
@@ -46,18 +51,20 @@ Par la suite exécuter /deactivate/ pour désactiver votre environnement virtuel
 *** Télécharger le code
     Assurez-vous d'avoir [[https://git-scm.com/download/win][git]] installé 
 #+BEGIN_SRC bash  -i
-$ git --version
-git version 2.17.1
+git --version
+# git version 2.17.1
 #+END_SRC
+
 puis exécutez
+
 #+BEGIN_SRC bash  -i
-$ git clone https://github.com/maliky/blockchain.git
-$ cd blockchain  # ou pour windows, dir blockchain
+git clone https://github.com/maliky/blockchain.git
+cd blockchain  # ou pour windows, dir blockchain
 #+END_SRC
 
 Vous pourez ensuite mettre à jour le code simplement avec
 #+BEGIN_SRC bash  -i
-$ git pull 
+git pull 
 # ou, $ git pull origin master
 #+END_SRC
 
@@ -66,11 +73,12 @@ Installer les bibliothèques nécessaires
 $ pip install -r requirements.txt
 #+END_SRC
 
-Vous êtes prêt à lancer le programme
+Vous êtes prêt à lancer le programme.
 
 ** Lancement
+
 *** Variable d'environements
-N'oubliez pas cette étape.  Elle est importante et doit être effectué à chaque démarrage de votre machine.
+_N'oubliez pas cette étape_.  Elle est importante et doit être effectuée à chaque démarrage de votre machine.
 
 Pour Linux
 #+BEGIN_SRC bash  -i
@@ -86,56 +94,58 @@ pour Windows Powerhsell voir [[https://flask.palletsprojects.com/en/1.1.x/cli/#a
 
 *** En local
 **** Lancer le serveur
+
 #+BEGIN_SRC bash  -i
 flask run --port 8000
 #+END_SRC
 Le noeud serveur est maintenant accessible en local à l'adresse par défaut http://127.0.0.1:8000, mais vous avez besoin d'un client pour interagir avec depuis le navigateur.
 
-Lors des tests à distance, (c'est-à-dire après avoir installé ngrok), vous devrez changer cette adresse en modifiant la variable ADRESSE_NOEUD_SERVEUR dans [[file:app/client.py]]
+Lors des tests à distance, (c'est-à-dire après avoir installé ngrok), vous devrez changer cette adresse en modifiant la variable ADRESSE_NOEUD_SERVEUR dans [[file:app/config_locale.py]]
 
 **** Lancer le client
 
 Ouvrez *un autre terminal* puis aller dans le dossier '<VosInitiales>Envs'
-activez l'environnement virtuel
-
 #+BEGIN_SRC bash  -i
-> cd \votre\chemin\pour\<VosInitiales>Envs
+cd \votre\chemin\pour\<VosInitiales>Envs
+#+END_SRC
+
+puis activez l'environnement virtuel
+#+BEGIN_SRC bash  -i
 > Scripts\activate
 #+END_SRC
 
 aller dans le dossier blockchain
 
 #+BEGIN_SRC bash  -i
-> cd blockchain
+cd blockchain
 #+END_SRC
 
 puis lancer l'application cliente avec
 
 #+BEGIN_SRC bash  -i
-> python lance_client.py
+python lance_client.py
+# ou py lance_client.py
 #+END_SRC
 
-L'interface est accessible a [[http://localhost:5000][http://localhost:5000]].
+L'interface est accessible a [[http://127.0.0.1:5000][http://127.0.0.1:5000]].
 
-*** Avec un adresse accessible depuis l'internet
+*** Ajouter un accès distant
 
-**** Créer un accès (temporaire) à notre serveur local depuis internet
-S'inscrire sur [[https://ngrok.com][ngrok.com]] et suivre les instructions du site
+**** Créer une redirection (temporaire) à notre serveur local depuis internet
+Aller sur [[https://ngrok.com][ngrok.com]] et suivre les instructions (1, 2, 3) du site.  Il s'agit de:
+- télécharger un executable qui va servir de relapy
+- de s'identifier auprès des services de ngrok à l'aide d'un token privé
+- et enfin d'activer la redirection
+
+**** Utiliser le client pour ajouter d'autres noeud serveur
+une fois plusieurs noeuds serveur enregistrer, faites miner des blocs à chaqu'un d'entre eux et observer comment votre chaine se syncronise.
 
 
-**** Utiliser l'interface pour ajouter d'autre noeud serveur
+* Annexes
 
-**** Utiliser curl pour ajouter les autres noeuds serveur          :noexport:
-#+BEGIN_SRC bash  -i
-curl -X POST \
-  <address.ngrok.de.votre.partenair>/senregistrer_aupres \
-  -H 'Content-Type: application/json' \
-  -d '{"adresse": "http://votre.adresse.ngrok ou http://127.0.0.1:8000"}'
-#+END_SRC
+** Exercices                                                       
+ Modifier le code pour que la même pool soit partagé entre les noeuds serveur au moment de la publication d'une nouvelle transaction.
 
-** Exercices                                                       :noexport:
-Décommenter les codes dans client.py et essayer d'ajouter une interface pour s'enregistrer aurpès des autres noeuds.
-via l'interface cliente
+** Template jinja                                                        
+Aide mémoire pour mettre à jour l'interface (le template)   https://jinja.palletsprojects.com/en/2.11.x/templates/#list-of-control-structures
 
-** template                                                        :noexport:
-   https://jinja.palletsprojects.com/en/2.11.x/templates/#list-of-control-structures

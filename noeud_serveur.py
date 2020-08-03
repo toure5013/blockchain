@@ -31,6 +31,8 @@ def nvl_tx():
     # et ajoutons le bloc dans notre blockchain
     blockchain.ajoute_nvl_tx(tx=donnees_tx_recues)
 
+    # mempool publier sur le réseau?
+    
     # Nous Renvoyons un message si tous c'est bien passé
     return "Succès", 201
 
