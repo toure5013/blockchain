@@ -4,7 +4,7 @@
 # Use pandoc pour convertir en .md
 
 * Projet Blockchain (en python) 
-Ce repertoire contient du code pour créer sa blockchain. Il a un objectif pédagogique et il est donc très commenté.  Il s'inspire d'un  [[https://developer.ibm.com/technologies/blockchain/tutorials/develop-a-blockchain-application-from-scratch-in-python/][tutoriel d'IBM]]  en anglais, dont le code est aussi sur [[https://github.com/satwikkansal/python_blockchain_app/tree/master][ce répertoire git]].
+Ce répertoire contient du code pour créer sa blockchain. Il a un objectif pédagogique et il est donc très commenté.  Il s'inspire d'un  [[https://developer.ibm.com/technologies/blockchain/tutorials/develop-a-blockchain-application-from-scratch-in-python/][tutoriel d'IBM]]  en anglais, dont le code est aussi sur [[https://github.com/satwikkansal/python_blockchain_app/tree/master][ce répertoire git]].
 
 Le code crée une application web avec le framework python [[https://palletsprojects.com/p/flask/][Flask]] pour écrire, lire et partager des données sur une blockchain.  Il s'agit d'un serveur et un client blockchain.
 
@@ -14,9 +14,9 @@ Le code peut être copié et testé localement, puis sur différentes machines d
 
 
 ** Pré-requis 
-Assurez-vous d'avoir une version récente de python (par exemple 3.8) et que virtualenv est installé en executant dans un *terminal (ou invite de commande windows)*
+Assurez-vous d'avoir une version récente de python (par exemple 3.8) et que virtualenv est installé en exécutant dans un *terminal (ou invite de commande windows)*
 #+BEGIN_SRC bash  -i
-$ python --vesrion
+$ python --version
 Python 3.8.2
 
 $ virtualenv --version
@@ -62,7 +62,7 @@ git clone https://github.com/maliky/blockchain.git
 cd blockchain  # ou pour windows, dir blockchain
 #+END_SRC
 
-Vous pourez ensuite mettre à jour le code simplement avec
+Vous pourrez ensuite mettre à jour le code simplement avec
 #+BEGIN_SRC bash  -i
 git pull 
 # ou, $ git pull origin master
@@ -77,7 +77,7 @@ Vous êtes prêt à lancer le programme.
 
 ** Lancement
 
-*** Variable d'environements
+*** Variable d'environnements
 _N'oubliez pas cette étape_.  Elle est importante et doit être effectuée à chaque démarrage de votre machine.
 
 Pour Linux
@@ -133,12 +133,12 @@ L'interface est accessible a [[http://127.0.0.1:5000][http://127.0.0.1:5000]].
 
 **** Créer une redirection (temporaire) à notre serveur local depuis internet
 Aller sur [[https://ngrok.com][ngrok.com]] et suivre les instructions (1, 2, 3) du site.  Il s'agit de:
-- télécharger un executable qui va servir de relapy
+- télécharger un exécutable qui va servir de relais
 - de s'identifier auprès des services de ngrok à l'aide d'un token privé
 - et enfin d'activer la redirection
 
 **** Utiliser le client pour ajouter d'autres noeud serveur
-une fois plusieurs noeuds serveur enregistrer, faites miner des blocs à chaqu'un d'entre eux et observer comment votre chaine se syncronise.
+Une fois plusieurs noeuds serveur enregistré, faites miner des blocs à chacun d'entre eux et observez comment votre chaîne se synchronise.
 
 
 * Annexes
