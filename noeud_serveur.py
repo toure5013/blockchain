@@ -10,9 +10,9 @@ from bloc import Bloc
 from app.config_locale import ADRESSE_MON_SERVEUR
 
 app = Flask(__name__)
+
 blockchain = Blockchain()
 blockchain.creer_bloc_genese()
-
 adrs_noeuds_serveurs: Set[str] = set()
 
 
@@ -41,12 +41,14 @@ def recupe_info_chaine():
     # Nous sauvegardons la chaine dans une variable
     blockhain_brute = [bloc.__dict__ for bloc in blockchain.chaine]
 
+    global adrs_noeud_serveurs
     # et Renvoyons un dictionnaire au format JSON (pour une communication via internet)
     # ce dictionnaire contient la longueur de la chaine,
     # la chaine comme une liste  de bloc au format dictionnaire
     # la liste des adrs_noeuds_serveurs
     return json.dumps(
-        {"chaine": blockhain_brute, "adrs_noeuds_serveurs": list(adrs_noeuds_serveurs)}
+        {"chaine": blockhain_brute,
+         "adrs_noeuds_serveurs": list(adrs_noeuds_serveurs)}
     )
 
 
