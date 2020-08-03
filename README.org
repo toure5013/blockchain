@@ -144,7 +144,7 @@ une fois plusieurs noeuds serveur enregistrer, faites miner des blocs à chaqu'u
 * Annexes
 
 ** Exercices                                                       
- Modifier le code pour que la même pool soit partagé entre les noeuds serveur au moment de la publication d'une nouvelle transaction.
+ Modifier le code pour que la /memepool/ soit partagée entre les noeuds serveurs au moment de la publication d'une nouvelle transaction.
 
 ** Template jinja                                                        
 Aide mémoire pour mettre à jour l'interface (le template)   https://jinja.palletsprojects.com/en/2.11.x/templates/#list-of-control-structures
