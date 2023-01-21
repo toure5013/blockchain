@@ -1,78 +1,127 @@
 <!-- extend base layout -->
-{% extends "base.html" %}
-{% block header %}
-<link rel="stylesheet" href="{{url_for('static', filename='css/index.css')}}" type="text/css" media="screen" />
-{% endblock %}
-{% block content %}
-<br>
+{% extends "base.html" %} {% block header %}
+<link
+  rel="stylesheet"
+  href="{{url_for('static', filename='css/index.css')}}"
+  type="text/css"
+  media="screen"
+/>
+{% endblock %} {% block content %}
+<br />
+<div class="container">
+  <!-- Formulaire pour soumettre le message et l'auteur -->
 
-<!-- Formulaire pour soumettre le message et l'auteur -->
-
-<form action="/soumettre" name="soumettre" id="textform" method="post">
-  <textarea name="contenu" rows="4" cols="50" placeholder="Ecrivez ce que vous voulez publier sur la chaine..."></textarea>
-  <br>
-  <input type="text" name="auteur" placeholder="Votre Nom (ou signature)">
-  <input type="Submit" value="Publier">
-</form>
-
-
-<!-- Formulaire pour s'enregister auprès d'un autre noeud et liste des noeuds suivis-->
-
-<form action="/senregistrer" name="senregistrer" id="textform" method="post">
-  <input type="text" name="adresse_denregistrement" placeholder="Entrer l'adresse d'un noeud_serveur auprès duquel nous voulons nous enregistrer">
-  <input type="Submit" value="Ajouter">
-</form>
-
-<!-- adresses des noeuds serveur suivis -->
-
-<ul class="list-group list-group-horizontal">
-  {% for adresse in adrs_noeuds_serveurs %}
-  <li class="list-group-item">{{adresse}}</li>
-  {% endfor %}
-</ul>
-
-
-<br>
-<!-- Boutons pour miner, synchroniser, récupérer l'info de la chaine et les tx en attentes -->
-
-<a href="{{adresse_noeud}}miner" target="_blank"><button>Demander le minage</button></a>
-<a href="/"><button>Resynchroniser</button></a>
-<a href="{{adresse_noeud}}info_chaine"><button>Afficher les infos de votre chaine (en brute)</button></a>
-<a href="{{adresse_noeud}}tx_en_attente"><button>Voir les transactions en attente (memepool)</button></a>
-
-<!-- Partie qui affiche les blocs de transaction -->
-
-<div  class="container">
-  {% for bloc in blockchain %}
-  <div class="card bg-light mb-3" style="max-width: 38rem;">
-    <div class="card-header">hachage du bloc: {{bloc.hachage}}</div>
-    <div class="card-body">
-      <h4 class="card-title">Block # {{bloc.hauteur}}</h4>
-      <p class="card-text">Date du minage : {{bloc.timestamp}}</p>
-      <div class="accordion" id="txs">
-	{% for tx in bloc.txs %}
-	<div class="card">
-	  <div class="card-header" id="heading{{loop.index}}-{{bloc.hauteur}}">
-	    <h2 class="mb-0">
-              <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapsetx{{loop.index}}-{{bloc.hauteur}}" aria-expanded="false" aria-controls="collapsetx{{loop.index}}-{{bloc.hauteur}}">
-		tx # {{loop.index}}: {{tx.auteur}}
-              </button>
-	    </h2>
-	  </div>
-
-	  <div id="collapsetx{{loop.index}}-{{bloc.hauteur}}" class="collapse hide" aria-labelledby="heading{{loop.index}}-{{bloc.hauteur}}" data-parent="#txs">
-	    <div class="card-body">
-	      {{tx.contenu}}
-	    </div>
-	  </div>
-	</div>
-	{% endfor %} 
+  <form action="/soumettre" name="soumettre" id="textform" method="post">
+    <textarea
+    class="form-control my-3" 
+      name="contenu"
+      rows="4"
+      cols="50"
+      placeholder="Ecrivez ce que vous voulez publier sur la chaine..."
+    ></textarea>
+    <br />
+    <div class="row my-3 ">
+      <div class="col-8 ">
+        <input type="text" name="auteur"  class="form-control " placeholder="Votre Nom (ou signature)" />
       </div>
-      <p class="card-text">hachage du bloc précédent : {{bloc.hachage_precedent}}</p>
+      <div class="col-4">
+        <input type="Submit" value="Publier" class="btn btn-info" />
+      </div>
     </div>
+  </form>
 
+  <!-- Formulaire pour s'enregister auprès d'un autre noeud et liste des noeuds suivis-->
+
+  <form action="/senregistrer" name="senregistrer" id="textform" method="post">
+
+    <div class="row my-3 ">
+      <div class="col-8 ">
+          <input
+          class="form-control"
+          type="text"
+          name="adresse_denregistrement"
+          placeholder="Entrer l'adresse d'un noeud_serveur auprès duquel nous voulons nous enregistrer"
+        />
+      </div>
+      <div class="col-4">
+        <input type="Submit" class="btn btn-warning" value="Ajouter" />
+      </div>
+    </div>
+ 
+  </form>
+
+  <!-- adresses des noeuds serveur suivis -->
+
+  <ul class="list-group list-group-horizontal">
+    {% for adresse in adrs_noeuds_serveurs %}
+    <li class="list-group-item">{{adresse}}</li>
+    {% endfor %}
+  </ul>
+
+  <br />
+  <!-- Boutons pour miner, synchroniser, récupérer l'info de la chaine et les tx en attentes -->
+
+  <a href="{{adresse_noeud}}miner" target="_blank">
+    <button class="btn btn-xs btn-primary">  Demander le minage</button>
+  </a>
+  <a href="/"><button class="btn btn-info">Resynchroniser</button></a>
+  <a href="{{adresse_noeud}}info_chaine">
+    <button class="btn btn-warning">Afficher les infos de votre chaine (en brute)</button>
+  </a>
+  <a href="{{adresse_noeud}}tx_en_attente">
+    <button class="btn btn-success">Voir les transactions en attente (memepool)</button>
+  </a>
+
+  <!-- Partie qui affiche les blocs de transaction -->
+
+  <div class="container mt-3">
+    {% for bloc in blockchain %}
+    <div class="card bg-light mb-3" style="max-width: 38rem;">
+      <div class="card-header">hachage du bloc: {{bloc.hachage}}</div>
+      <div class="card-body">
+        <h4 class="card-title">Block # {{bloc.hauteur}}</h4>
+        <p class="card-text">Date du minage : {{bloc.timestamp}}</p>
+        <div class="accordion" id="txs">
+          {% for tx in bloc.txs %}
+          <div class="card">
+            <div
+              class="card-header"
+              id="heading{{loop.index}}-{{bloc.hauteur}}"
+            >
+              <h2 class="mb-0">
+                <button
+                  class="btn btn-link btn-block text-left"
+                  type="button"
+                  data-toggle="collapse"
+                  data-target="#collapsetx{{loop.index}}-{{bloc.hauteur}}"
+                  aria-expanded="false"
+                  aria-controls="collapsetx{{loop.index}}-{{bloc.hauteur}}"
+                >
+                  tx # {{loop.index}}: {{tx.auteur}}
+                </button>
+              </h2>
+            </div>
+
+            <div
+              id="collapsetx{{loop.index}}-{{bloc.hauteur}}"
+              class="collapse hide"
+              aria-labelledby="heading{{loop.index}}-{{bloc.hauteur}}"
+              data-parent="#txs"
+            >
+              <div class="card-body">
+                {{tx.contenu}}
+              </div>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+        <p class="card-text">
+          hachage du bloc précédent : {{bloc.hachage_precedent}}
+        </p>
+      </div>
+    </div>
+    {% endfor %}
   </div>
-  {% endfor %}
 </div>
 
 {% endblock %}
